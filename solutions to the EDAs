@@ -1,0 +1,26 @@
+m = 50
+n = 200
+geners = 50
+pop = np.random.randint(2, size=(m,n))
+
+
+medians, bests = [], []
+
+for gener in range(geners):
+    fitnesses = np.array([pop[i,:].sum() for i in range(m)])
+    median = np.median(fitnesses)
+    best = np.max(fitnesses)
+    medians.append(median)
+    bests.append(best)
+    distri = pop[fitnesses>median].mean(axis=0)
+    pop = np.random.rand(m,n) # a whole new sample!!
+    for i in range(m):
+        for j in range(n):
+            if pop[i,j] < distri[j]:
+                pop[i,j] = 1
+            else:
+                pop[i,j] = 0
+df = pd.DataFrame()
+df['median'] = medians
+df['best'] = bests
+df.plot()
